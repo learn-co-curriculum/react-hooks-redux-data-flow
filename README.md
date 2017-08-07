@@ -1,5 +1,4 @@
-Using Pure Functions To Update Application State
-==============
+# Using Pure Functions To Update Application State
 
 In this lesson, you will learn the following:
 * Learn how pure functions update our application state.
@@ -83,13 +82,14 @@ function changeState(state, action){
   switch (action.type) {
     case 'INCREASE_COUNT':
       return {count: state.count + 1}
-			case 'DECREASE_COUNT':
+		case 'DECREASE_COUNT':
     	return {count: state.count - 1}
     default:
       return state;
   }
 }
-    let state = {count: 0}
+
+let state = {count: 0}
 
 changeState(state, {type: 'INCREASE_COUNT'})
 	// => {count: 1}

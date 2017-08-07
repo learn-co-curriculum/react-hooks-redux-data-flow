@@ -79,26 +79,32 @@ function changeState(state, action){
     case 'INCREASE_COUNT':
       return {count: state.count + 1}
     case 'DECREASE_COUNT':
-    	return {count: state.count - 1}
+      return {count: state.count - 1}
     default:
       return state;
   }
 }
-    let state = {count: 0}
+
+let state = {count: 0}
 
 changeState(state, {type: 'INCREASE_COUNT'})
-	// => {count: 1}
+// => {count: 1}
+
 changeState(state, {type: 'DECREASE_COUNT'})
-	// => {count: -1}
+// => {count: -1}
 ```
 
 Ok! That my friends, is the crux of redux. To summarize:
 
-`Action -> Function -> Updated State`
+```
+Action -> Function -> Updated State
+```
 
 And let's give this function a name. Because it is combining two pieces of information and reducing this combination into one value, we'll say that it reduces the state and the action into one updated state. We call this function a reducer. So:
 
-`Action -> Reducer -> Updated State`
+```
+Action -> Reducer -> Updated State
+```
 
 As you learn more about redux, things may become more complex. Just remember that at the core of redux is always this flow. An action gets sent to a reducer which then updates the state of the application.
 
@@ -107,16 +113,16 @@ You may notice a problem. While we can call the changeState reducer to increase 
 
 ## Reducers are pure functions
 ```js
-function reducer(state, action){
-    switch (action.type) {
-      case 'INCREASE_COUNT':
-        return {count: state.count + 1}
-      case 'DECREASE_COUNT'
-      	return {count: state.count - 1}
-      default:
-        return state;
-    }
+function reducer(state, action){	  
+  switch (action.type) {
+    case 'INCREASE_COUNT':
+      return {count: state.count + 1}
+    case 'DECREASE_COUNT'
+      return {count: state.count - 1}
+    default:
+      return state;
   }
+}
 ```
 
 An important thing to note about reducers is that they are pure functions. Let's remember the characteristics of pure functions:

@@ -4,9 +4,9 @@
 
 In this lesson, you will learn the following:
 
-* Learn how pure functions update our application state.
-* Learn the fundamentals of the redux flow.
-* Learn how to adhere to the constraints of a pure function.
+- Learn how pure functions update our application state.
+- Learn the fundamentals of the redux flow.
+- Learn how to adhere to the constraints of a pure function.
 
 ## Review
 
@@ -17,8 +17,8 @@ updates our state.
 Let's take a look at an example:
 
 ```js
-let state = {count: 0}
-let action = {type: 'INCREASE_COUNT'}
+let state = { count: 0 };
+let action = { type: "counter/increment" };
 ```
 
 Somehow I want to send this action to the state so that at the end our state is
@@ -34,28 +34,28 @@ Here's what it could look like:
 
 ```js
 function changeState(state, action) {
-  if (action.type === 'INCREASE_COUNT') {
-    return {count: state.count + 1 }
+  if (action.type === "counter/increment") {
+    return { count: state.count + 1 };
   }
 }
 ```
 
 That's pretty straightforward code. If the action's type property is the String
-`'INCREASE_COUNT'` then go ahead and increment and return the new state.
+`'counter/increment'` then go ahead and increment and return the new state.
 
 The important piece of information we looked at to determine how to change the
 state was `action.type`. Actions always need a `type` property so the function
 knows what to do. If you can imagine a whole bunch of different actions that
-change the state in different ways, `'DECREASE_COUNT'`,
-`'INCREASE_COUNT_BY_TEN'` and so on, it shouldn't be hard to see how that code
+change the state in different ways, `'counter/decrement'`,
+`'counter/incrementByTen'` and so on, it shouldn't be hard to see how that code
 could become very messy with a bunch of `if`s and `else if`s. Instead, it is
 customary to use a `switch case` statement.
 
 ```js
-function changeState(state, action){
+function changeState(state, action) {
   switch (action.type) {
-    case 'INCREASE_COUNT':
-      return {count: state.count + 1}
+    case "counter/increment":
+      return { count: state.count + 1 };
   }
 }
 ```
@@ -68,10 +68,10 @@ change the state we never return `null` or `undefined`. We'll cover this by
 adding a `default` case to our function.
 
 ```js
-function changeState(state, action){
+function changeState(state, action) {
   switch (action.type) {
-    case 'INCREASE_COUNT':
-      return {count: state.count + 1}
+    case "counter/increment":
+      return { count: state.count + 1 };
     default:
       return state;
   }
@@ -82,41 +82,40 @@ This way, no matter what, when accessing the Redux state we'll always get some
 form of the state back.
 
 ```js
-let state = {count: 0}
-let action = {type: 'INCREASE_COUNT'}
+let state = { count: 0 };
+let action = { type: "counter/increment" };
 
-changeState(state, action)
+changeState(state, action);
 // => {count: 1}
 ```
 
 Ok, so if you copy and paste that code into a JavaScript console, you'll see
 that the function works just as we'd expect. The state and action are passed to
-our `changeState function`, which hits the `'INCREASE_COUNT'` case statement.
+our `changeState function`, which hits the `'counter/increment'` case statement.
 Then it takes the state's count of zero, adds one to it, and returns a new
-object `{count: 1}`.
+object `{ count: 1 }`.
 
 Now let's have this function respond to another action, decrease count. Give it
 a shot, the answer is below.
 
-
 ```js
-function changeState(state, action){	  
+function changeState(state, action) {
   switch (action.type) {
-    case 'INCREASE_COUNT':
-      return {count: state.count + 1}
-    case 'DECREASE_COUNT':
-      return {count: state.count - 1}
+    case "counter/increment":
+      return { count: state.count + 1 };
+    case "counter/decrement":
+      return { count: state.count - 1 };
     default:
       return state;
   }
 }
 
-let state = {count: 0}
+let state = { count: 0 };
 
-changeState(state, {type: 'INCREASE_COUNT'})
+changeState(state, { type: "counter/increment" });
 // => {count: 1}
 
-changeState(state, {type: 'DECREASE_COUNT'})
+changeState(state, { type: "counter/decrement" });
 // => {count: -1}
 ```
 
@@ -149,12 +148,12 @@ tackle how this works in an upcoming section.
 ## Reducers are pure functions
 
 ```js
-function reducer(state, action){	  
+function reducer(state, action) {
   switch (action.type) {
-    case 'INCREASE_COUNT':
-      return {count: state.count + 1}
-    case 'DECREASE_COUNT':
-      return {count: state.count - 1}
+    case "counter/increment":
+      return { count: state.count + 1 };
+    case "counter/decrement":
+      return { count: state.count - 1 };
     default:
       return state;
   }
@@ -164,17 +163,17 @@ function reducer(state, action){
 An important thing to note about reducers is that they are pure functions. Let's
 remember the characteristics of pure functions:
 
-1. Pure functions are only determined by their input values
+1. The return value of pure functions are only determined by their input values.
 
-2. Pure Functions have no side effects. By this we mean pure functions do not have
-any effect outside of the function. They only return a value.
+2. Pure functions have no side effects. By this we mean pure functions do not have
+   any effect outside of the function. They only return a value.
 
 > Note: The reason we like pure functions so much is because if a function has
-no effect outside of the object, and if the function always returns the same
-value given a specific input, this means that our functions become really
-predictable. In addition, the lack of side effects means that the functions are
-also contained, and can be used safely without affecting the rest of your
-application.
+> no effect outside of the object, and if the function always returns the same
+> value given a specific input, this means that our functions become really
+> predictable. In addition, the lack of side effects means that the functions are
+> also contained, and can be used safely without affecting the rest of your
+> application.
 
 Let's take these two characteristics of pure functions in turn, and ensure that
 we are adhering to them here.
@@ -182,7 +181,7 @@ we are adhering to them here.
 Ok, so the first characteristic of pure functions means that given the same
 input of the function, I will always receive the same output from that function.
 That seems to hold, given a specific state object like `{count: 2}` and an
-action object like `{type: 'DECREASE_COUNT'}` will I always get back the same
+action object like `{type: 'counter/decrement'}` will I always get back the same
 value? Yes. Given those two arguments, the output will always be `{count: 1}`.
 
 As for the 'no side effects' characteristic, there's something pretty subtle
@@ -197,15 +196,15 @@ function by not changing any value that is defined outside of the function.
 ## Summary
 
 1. We hold our application's state in one plain old JavaScript object, and we
-update that state by passing both an action and the old state to our reducer.
-Our reducer returns to us our new state.
-2. So to change our state we (1) create an action (an **action** is just a plain 
-object with a type key); and (2) and pass the action as an argument when we call 
-the **reducer** (which is just a function with a switch/case statement). This 
-produces a new state.
+   update that state by passing both an action and the old state to our reducer.
+   Our reducer returns to us our new state.
+2. So to change our state we (1) create an action (an **action** is just a plain
+   object with a type key); and (2) and pass the action as an argument when we call
+   the **reducer** (which is just a function with a switch/case statement). This
+   produces a new state.
 3. Our reducer is a pure function which means that given the same arguments of
-state and action, it will always produce the same new state. Also it means that
-our reducer never updates the previous state, but rather creates a new state
-object.
+   state and action, it will always produce the same new state. Also it means that
+   our reducer never updates the previous state, but rather creates a new state
+   object.
 
 <p class='util--hide'>View <a href='https://learn.co/lessons/redux-flow'>Redux Flow</a> on Learn.co and start learning to code for free.</p>

@@ -206,5 +206,4 @@ function by not changing any value that is defined outside of the function.
    state and action, it will always produce the same new state. Also it means that
    our reducer never updates the previous state, but rather creates a new state
    object.
-
-<p class='util--hide'>View <a href='https://learn.co/lessons/redux-flow'>Redux Flow</a> on Learn.co and start learning to code for free.</p>
+   

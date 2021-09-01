@@ -1,12 +1,10 @@
 # Using Pure Functions to Update Application State
 
-## Objectives:
+## Learning Goals
 
-In this lesson, you will learn the following:
-
-- Learn how pure functions update our application state.
-- Learn the fundamentals of the redux flow.
-- Learn how to adhere to the constraints of a pure function.
+- Define what a pure function is
+- Explain the fundamentals of the Redux flow
+- Explain how pure functions update our application state
 
 ## Review
 

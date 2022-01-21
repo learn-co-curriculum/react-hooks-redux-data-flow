@@ -82,7 +82,7 @@ form of the state back.
 let state = { count: 0 };
 let action = { type: "counter/increment" };
 
-changeState(state, action);
+state = changeState(state, action);
 // => {count: 1}
 ```
 
@@ -109,11 +109,11 @@ function changeState(state, action) {
 
 let state = { count: 0 };
 
-changeState(state, { type: "counter/increment" });
+state = changeState(state, { type: "counter/increment" });
 // => {count: 1}
 
-changeState(state, { type: "counter/decrement" });
-// => {count: -1}
+state = changeState(state, { type: "counter/decrement" });
+// => {count: 0}
 ```
 
 Ok! That my friends, is the crux of Redux. To summarize:
@@ -132,16 +132,24 @@ Action & Current State -> Reducer -> Updated State
 ```
 
 As you learn more about Redux, things may become more complex. Just remember
-that this flow is always at the core of Redux. An action gets sent to a reducer
-which then updates the state of the application.
-
-**NOTE:** As you may have noticed if you're following along, we still have a
-problem. While we can call the changeState reducer to increase the count from
-zero to one, if we call change state again it keeps returning a count of one. In
-other words, we are not persisting this change of state. We'll tackle how this
-works in an upcoming lesson.
+that this flow is always at the core of Redux. An **action** gets sent to a
+**reducer** which then updates the state of the application.
 
 ## Reducers are pure functions
+
+An important thing to note about reducers is that they are pure functions. Let's
+remember the characteristics of pure functions:
+
+1. The return value of a pure function is determined solely by its input values.
+
+2. Pure functions have no side effects. By this we mean pure functions do not
+   have any effect outside of the function itself. They only return a value.
+
+> Note: The reason we like pure functions so much is because if a function has
+> no side effects and always returns the same value given the same input, it
+> becomes really predictable. In addition, the lack of side effects means that
+> the functions are also contained, and can be used safely without affecting the
+> rest of your application.
 
 ```js
 function reducer(state, action) {
@@ -156,29 +164,14 @@ function reducer(state, action) {
 }
 ```
 
-An important thing to note about reducers is that they are pure functions. Let's
-remember the characteristics of pure functions:
-
-1. The return value of a pure function is determined solely by its input values.
-
-2. Pure functions have no side effects. By this we mean pure functions do not have
-   any effect outside of the function itself. They only return a value.
-
-> Note: The reason we like pure functions so much is because if a function has
-> no side effects and always returns the same value given the same input, it
-> becomes really predictable. In addition, the lack of side effects means that
-> the functions are also contained, and can be used safely without affecting the
-> rest of your application.
-
 Let's take these two characteristics of pure functions in turn, and ensure that
 we are adhering to them here.
 
-Ok, so the first characteristic of pure functions means that given the same
-input to the function, I will always receive the same output from that function.
-That seems to hold; given a specific state object like `{count: 2}` and an
-action object like `{type: 'counter/decrement'}`, will I always get back the
-same value? Yes. Given those two arguments, the output will always be `{count:
-1}`.
+The first characteristic of pure functions means that given the same input to
+the function, I will always receive the same output from that function. That
+seems to hold; given a specific state object like `{count: 2}` and an action
+object like `{type: 'counter/decrement'}`, will I always get back the same
+value? Yes. Given those two arguments, the output will always be `{count: 1}`.
 
 As for the 'no side effects' characteristic, there's something pretty subtle
 going on in our reducer. The object returned is not the same object that is
@@ -201,4 +194,4 @@ reducer executes the matching `case` of the `switch` statement to update state.
 In Redux, reducers are pure functions, which means that given the same arguments
 of state and action, they will always produce the same new state. It also means
 that our reducer never updates the previous state object, but rather creates a
-new udpated object.
+new updated object.
